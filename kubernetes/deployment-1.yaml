@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fe-demo-python
+  name: fe-demo-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fe-demo-python
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: fe-demo-python
+    spec:
+      containers:
+      - image: iconsent/fe-demo-python
+        name: fe-demo
+        resources: {}
+        env:
+          - name: SPRINGBOOT_DEMO_URL
+            value: http://springboot-demo:8080
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fe-demo-python
+  name: fe-demo-python
+spec:
+  ports:
+  - name: web
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: fe-demo-python
+  type: ClusterIP
+status:
+  loadBalancer: {}
